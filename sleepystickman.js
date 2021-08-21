@@ -20,10 +20,21 @@ let bedXEnd = 250;//80
 let bedYStart = 40;
 let bedYEnd = 40;
 
-
 let mrSleepy = svg.append('circle').attr('r', mrSleepyRadius).attr('cy', y).attr('cx', x);
 let bed = svg.append('line').attr('x1', bedXStart).attr('x2', bedXEnd).attr('y1', bedYStart).attr('y2', bedYEnd).attr('style', 'stroke:purple');
 let bedBorder = bedYStart + mrSleepyRadius;
+
+
+
+// Draw Mr.Sleepy
+ //p.s The coordinates follow X, Y
+let stickMan = "M 110 300, L 120 300, 120 310, 110 310, M 115 310, L 115 313, 114 313, 114 310 M 115 313, L 130 318, 130 319, 115, 314, M 115, 311, L 108 311, 108 303, 109 303, 109 309, M      Z";
+let manStick = svg.append('path')
+  .attr('d', stickMan)
+  .attr('fill', 'black');
+manStick.transition().duration(3000).attr('transform','translate(0,30)');
+
+
 
 
 let slab_half_width = 25; // Slab width is 50, but we draw the line from x-slab_half_width to x+slab_half_width
@@ -35,6 +46,8 @@ let slabY = [240, 280, 320];
 const numberOfSlabs = slabX.length;
 let slabs = [];
 
+//let slabsYStart = [];
+//let slabsYEnd = [];
 let slabsBorder = [];
 let slabsXStart = [];
 let slabsXEnd = [];
@@ -102,10 +115,16 @@ var timer = d3.timer(function () {
     }
     //REACT TO SLABS
     for (let i = 0; i < numberOfSlabs; i++)
-            if (mrSleepy.attr('cy') == slabsBorder[i] && mrSleepy.attr('cx') > slabsXStart[i] && mrSleepy.attr('cx') < slabsXEnd[i]) {
+            if (mrSleepy.attr('cy') > slabsBorder[i] &&
+                mrSleepy.attr('cy') < slabsBorder[i] + 5 &&
+                mrSleepy.attr('cx') > slabsXStart[i] &&
+                mrSleepy.attr('cx') < slabsXEnd[i]) {
                 
                 mrSleepy.interrupt().attr('cy', slabsBorder[i]);
-            }
+                mrSleepy.transition().attr('cy', screenBase).ease(d3.easeQuadIn).duration(5000);
+            } /*else {
+                mrSleepy.transition().attr('cy', screenBase).ease(d3.easeQuadIn).duration(5000);
+            }*/
 
 }, 500);
 
@@ -152,4 +171,3 @@ function move() {
 
 
 //d3.select(mrSleepy)
-
