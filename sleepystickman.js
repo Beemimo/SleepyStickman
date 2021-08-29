@@ -20,19 +20,23 @@ let bedXEnd = 250;//80
 let bedYStart = 40;
 let bedYEnd = 40;
 
-let mrSleepy = svg.append('circle').attr('r', mrSleepyRadius).attr('cy', y).attr('cx', x);
-let bed = svg.append('line').attr('x1', bedXStart).attr('x2', bedXEnd).attr('y1', bedYStart).attr('y2', bedYEnd).attr('style', 'stroke:purple');
+let mrSleepy = svg.append('circle').attr('r', mrSleepyRadius).attr('cy', y).attr('cx', x).attr('fill', 'black');
+let bed = svg.append('line').attr('x1', bedXStart).attr('x2', bedXEnd).attr('y1', bedYStart).attr('y2', bedYEnd).attr('style', 'stroke:purple').attr('stroke-width', 2);
 let bedBorder = bedYStart + mrSleepyRadius;
 
 
 
 // Draw Mr.Sleepy
  //p.s The coordinates follow X, Y
-let stickMan = "M 110 300, L 120 300, 120 310, 110 310, M 115 310, L 115 313, 114 313, 114 310 M 115 313, L 130 318, 130 319, 115, 314, M 115, 311, L 108 311, 108 303, 109 303, 109 309, M      Z";
+let stickMan = "M 110 300, L 120 300, 120 310, 110 310, M 115 310, L 115 313, 114 313, 114 310 M 115 313, L 130 318, 130 319, 115, 314, M 115, 311, L 108 311, 108 303, 109 303, 109 309Z";
+mrSleepy.append('path')
+  .attr('d', stickMan)
+  .attr('fill', 'black');
+
 let manStick = svg.append('path')
   .attr('d', stickMan)
   .attr('fill', 'black');
-manStick.transition().duration(3000).attr('transform','translate(0,30)');
+//manStick.transition().duration(3000).attr('transform','translate(0,0)');
 
 
 
@@ -99,6 +103,13 @@ function jump() {
     
         mrSleepy.interrupt().attr('cy', y);
         mrSleepy.transition().attr('cy', screenBase).ease(d3.easeQuadIn).duration(5000);
+        
+        manStick.interrupt()
+        let str_translate = "translate(0, " + (y-300) + ")";
+
+        manStick.transition().duration(0).attr('transform',str_translate);
+        str_translate = "translate(0, " + (screenBase-300) + ")";
+        manStick.transition().ease(d3.easeQuadIn).duration(5000).attr('transform',str_translate);
     }
     
 }
