@@ -20,7 +20,7 @@ let bedXEnd = 250;//80
 let bedYStart = 40;
 let bedYEnd = 40;
 
-let mrSleepy = svg.append('circle').attr('r', mrSleepyRadius).attr('cy', y).attr('cx', x).attr('fill', 'black');
+let mrSleepy = svg.append('circle').attr('r', mrSleepyRadius).attr('cy', y).attr('cx', x).attr('fill', 'blue');
 let bed = svg.append('line').attr('x1', bedXStart).attr('x2', bedXEnd).attr('y1', bedYStart).attr('y2', bedYEnd).attr('style', 'stroke:purple').attr('stroke-width', 2);
 let bedBorder = bedYStart + mrSleepyRadius;
 
@@ -132,11 +132,16 @@ var timer = d3.timer(function () {
                 mrSleepy.attr('cx') < slabsXEnd[i]) {
                 
                 mrSleepy.interrupt().attr('cy', slabsBorder[i]);
+                //Make mrSleepy continue falling after moving horizontally off the edge of a slab
                 mrSleepy.transition().attr('cy', screenBase).ease(d3.easeQuadIn).duration(5000);
+                
+                manStick.interrupt();
+                let str_translate = "translate(0, " + (slabsBorder[i]-300) + ")";
+
+                manStick.transition().duration(0).attr('transform',str_translate);
             } /*else {
                 mrSleepy.transition().attr('cy', screenBase).ease(d3.easeQuadIn).duration(5000);
             }*/
-
 }, 500);
 
 
